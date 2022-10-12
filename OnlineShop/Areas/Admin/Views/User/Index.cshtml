@@ -1,0 +1,136 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@*@model  PagedList.IPagedList<Model.EF.User>*@
+@model  List<Model.EF.User>
+@{
+    ViewBag.Title = "Quản lý người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section breadcrumb{ Hệ thống }
+@section breadcrumb_active{ Người dùng }
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap5">
+                <div class="row mb-3">
+                    <div class="col-sm-12 col-md-12">
+                        <a href="/Admin/User/Create" class="btn btn-success">
+                            <i class="bi bi-person-plus"></i>
+                            Thêm người dùng
+                        </a>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="dataTables_length" id="example_length">
+                            <label>
+                                Show
+                                <select name="example_length"
+                                        aria-controls="example"
+                                        class="form-select form-select-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        @using (Html.BeginForm("Index", "User", FormMethod.Get))
+                        {
+                            <div id="example_filter" class="dataTables_filter">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    Search
+                                </button>
+                                <input type="search"
+                                       class="form-control"
+                                       placeholder=""
+                                       aria-controls="example"
+                                       name="searchString" ,
+                                       value="@ViewBag.SearchString" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="example"
+                               class="table table-striped table-bordered dataTable"
+                               style="width: 100%"
+                               role="grid"
+                               aria-describedby="example_info">
+                            <thead class="table-secondary">
+                                <tr role="row">
+                                    <th>
+                                        Tài khoản
+                                    </th>
+                                    <th>
+                                        Họ tên
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Số điện thoại
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                    <tr id="row_@user.ID">
+                                        <td>@user.Name</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.Phone</td>
+                                        <td>
+                                            <div class="table-actions d-flex align-items-center gap-3 fs-6">
+                                                <a href="javascript:;" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>
+                                                <a href="/Admin/User/Edit/@user.ID" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sửa"><i class="bi bi-pencil-fill"></i></a>
+                                                @Ajax.ActionLink(" ", "Delete", new { @id = user.ID }, new AjaxOptions
+                                           {
+                                               Confirm = "Bạn có muốn xóa bản ghi này",
+                                               OnComplete = "$('#row_" + user.ID + "').remove()",
+                                               HttpMethod = "Delete"
+                                           }, new { @class = "text-danger bi bi-trash-fill", @title = "Xóa" })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @*<div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info"
+                             id="example_info"
+                             role="status"
+                             aria-live="polite">
+                            Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) to @Model.PageSize <Span>of</Span> @Model.PageCount entries
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers"
+                             id="example_paginate">
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = @ViewBag.SearchString }), new PagedListRenderOptions
+                           {
+                               LiElementClasses = new string[] { "page-item page-link" }
+                           })
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
