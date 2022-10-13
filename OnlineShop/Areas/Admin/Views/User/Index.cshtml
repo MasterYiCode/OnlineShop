@@ -1,7 +1,6 @@
 ﻿@using PagedList
 @using PagedList.Mvc
-@*@model  PagedList.IPagedList<Model.EF.User>*@
-@model  List<Model.EF.User>
+@model  PagedList.IPagedList<Model.EF.User>
 @{
     ViewBag.Title = "Quản lý người dùng";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -19,6 +18,7 @@
                         <a href="/Admin/User/Create" class="btn btn-success">
                             <i class="bi bi-person-plus"></i>
                             Thêm người dùng
+                            @ViewBag.User
                         </a>
                     </div>
                 </div>
@@ -66,9 +66,6 @@
                             <thead class="table-secondary">
                                 <tr role="row">
                                     <th>
-                                        Tài khoản
-                                    </th>
-                                    <th>
                                         Họ tên
                                     </th>
                                     <th>
@@ -97,7 +94,7 @@
                                            {
                                                Confirm = "Bạn có muốn xóa bản ghi này",
                                                OnComplete = "$('#row_" + user.ID + "').remove()",
-                                               HttpMethod = "Delete"
+                                               HttpMethod = "POST"
                                            }, new { @class = "text-danger bi bi-trash-fill", @title = "Xóa" })
                                             </div>
                                         </td>
@@ -108,7 +105,7 @@
                         </table>
                     </div>
                 </div>
-                @*<div class="row">
+                <div class="row">
                     <div class="col-sm-12 col-md-5">
                         <div class="dataTables_info"
                              id="example_info"
@@ -126,7 +123,7 @@
                            })
                         </div>
                     </div>
-                </div>*@
+                </div>
             </div>
         </div>
     </div>

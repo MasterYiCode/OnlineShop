@@ -1,4 +1,5 @@
 ﻿using Model.EF;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,10 +30,14 @@ namespace Model.Dao
             var u = context.Users.Find(user.ID);
             u.Name = user.Name;
             u.Email = user.Email;
-            u.Password = user.Password;
+            if (!String.IsNullOrEmpty(user.Password))
+            {
+                u.Password = user.Password;
+
+            }
             u.DateOfBirth = user.DateOfBirth;
             u.Address = user.Address;
-            user.Phone = user.Phone;
+            u.Phone = user.Phone;
             u.ModifiedDate = user.ModifiedDate;
             u.ModifiedBy = user.ModifiedBy;
             u.Status = user.Status;
@@ -54,6 +59,16 @@ namespace Model.Dao
             return context.Users.ToList();
         }
 
+        // Get all user
+        public IEnumerable<User> GetAllUserPaging(string searchString, int page, int pageSize)
+        {
+            IQueryable<User> model = context.Users;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                model = model.Where(x => x.Email.Contains(searchString) || x.Name.Contains(searchString));
+            }
+            return model.OrderByDescending(x => x.CreatedDate).ToPagedList(page, pageSize);
+        }
 
         // Get User By Id
         public User GetUserById(long id)

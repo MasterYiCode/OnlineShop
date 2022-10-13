@@ -15,21 +15,23 @@ namespace OnlineShop.Areas.Admin.Controllers
     public class UserController : Controller
     {
         // GET: Admin/User
-        [Authorize]        
-        public ActionResult Index()
+        //[Authorize]        
+        public ActionResult Index(string searchString, int page = 1, int pageSize = 10)
         {
             var dao = new UserDao();
-            return View(dao.GetAllUser());
+            var model = dao.GetAllUserPaging(searchString, page, pageSize);
+            ViewBag.SearchString = searchString;
+            return View(model);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public ActionResult Create(UserVM model)
         {
@@ -59,7 +61,7 @@ namespace OnlineShop.Areas.Admin.Controllers
             return View(model);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult Edit(long id)
         {
@@ -69,6 +71,7 @@ namespace OnlineShop.Areas.Admin.Controllers
                 ID = id,
                 Name = u.Name,
                 Email = u.Email,
+                Password = u.Password,
                 DateOfBirth = u.DateOfBirth,
                 Address = u.Address,
                 Phone = u.Phone,
@@ -77,11 +80,12 @@ namespace OnlineShop.Areas.Admin.Controllers
             return View(userEditVM);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public ActionResult Edit(UserEditVM userEditVM)
         {
             ModelState.Remove("ConfirmPassword");
+            ModelState.Remove("Password");
             if (ModelState.IsValid)
             {
                 var dao = new UserDao();
@@ -95,7 +99,7 @@ namespace OnlineShop.Areas.Admin.Controllers
                     ID = userEditVM.ID,
                     Name = userEditVM.Name,
                     Email = userEditVM.Email,
-                    Password = Encryptor.MD5Hash(userEditVM.Password),
+                    Password = userEditVM.Password,
                     DateOfBirth = userEditVM.DateOfBirth,
                     Address = userEditVM.Address,
                     Phone = userEditVM.Phone,
@@ -113,11 +117,22 @@ namespace OnlineShop.Areas.Admin.Controllers
             return View(userEditVM);
         }
 
-        [Authorize]
+        //[Authorize]
         public ActionResult Delete(long id)
         {
             new UserDao().Delete(id);
             return RedirectToAction("Index", "User");
+        }
+
+        [NonAction]
+        public void GetUserCookie()
+        {
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            if(authCookie != null)
+            {
+                var ticketInfo = FormsAuthentication.Decrypt(authCookie.Value);
+            }
+
         }
     }
 }
