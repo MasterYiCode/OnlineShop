@@ -8,6 +8,10 @@
 
 @section breadcrumb{ Hệ thống }
 @section breadcrumb_active{ Người dùng }
+@section jsFooter
+{
+    <script src="~/assets/admin/js/controller/userController.js"></script>
+} 
 
 <div class="card">
     <div class="card-body">
@@ -75,6 +79,9 @@
                                         Số điện thoại
                                     </th>
                                     <th>
+                                        Trạng thái
+                                    </th>
+                                    <th>
                                         Action
                                     </th>
                                 </tr>
@@ -86,6 +93,7 @@
                                         <td>@user.Name</td>
                                         <td>@user.Email</td>
                                         <td>@user.Phone</td>
+                                        <td><a href="#" class="btn-active" data-id="@user.ID">@(user.Status ? "Khóa" : "Kích hoạt")</a></td>
                                         <td>
                                             <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                                 <a href="javascript:;" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>

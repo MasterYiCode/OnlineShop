@@ -12,7 +12,7 @@ using System.Web.Security;
 
 namespace OnlineShop.Areas.Admin.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         // GET: Admin/User
         //[Authorize]        
@@ -51,11 +51,12 @@ namespace OnlineShop.Areas.Admin.Controllers
                     CreatedDate = DateTime.Now,
                     CreatedBy = "dochihung492002@gmail.com"
                 });
-
+                SetAlert("Thêm người dùng thành công", "success");
                 return RedirectToAction("Index", "User");
             }
             else
             {
+                SetAlert("Thêm người dùng thất bại", "error");
                 ModelState.AddModelError("", "Thêm người dùng thất bại");
             }    
             return View(model);
@@ -133,6 +134,16 @@ namespace OnlineShop.Areas.Admin.Controllers
                 var ticketInfo = FormsAuthentication.Decrypt(authCookie.Value);
             }
 
+        }
+        [HttpPost]
+        public JsonResult ChangeStatus(long id)
+        {
+            var dao = new UserDao();
+            var result =  dao.ChangeStatus(id);
+            return Json(new
+            {
+                status = result
+            });
         }
     }
 }

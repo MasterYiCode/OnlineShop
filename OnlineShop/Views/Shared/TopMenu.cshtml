@@ -1,0 +1,34 @@
+﻿@model List<Model.EF.Menu>
+
+<ul class="top-menu">
+    <li>
+        <a href="#">Links</a>
+        <ul>
+            @foreach (var item in Model.Where(x => x.ParentID == null))
+            {
+                var child = Model.Where(x => x.ParentID == item.ID);
+                if (child.Count() > 0)
+                {
+                    <li>
+                        <div class="header-dropdown">
+                            <a href="@item.Link" target="@item.Target">@item.Text</a>
+                            <div class="header-menu">
+                                <ul>
+                                    @foreach (var childItem in child)
+                                    {
+                                        <li><a href="@childItem.Link" target="@childItem.Target">@childItem.Text</a></li>
+                                    }
+                                </ul>
+                            </div><!-- End .header-menu -->
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li> <a href="@item.Link" target="@item.Target" data-toggle="modal">@item.Text</a></li>
+
+                }    
+            }
+        </ul>
+    </li>
+</ul><!-- End .top-menu -->

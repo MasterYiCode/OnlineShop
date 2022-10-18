@@ -1,7 +1,11 @@
-
+$(function () {
+	$('#alert-box').removeClass('hide');
+	$('#alert-box').delay(1000).slideUp(500);
+}
 
 $(function() {
 	"use strict";
+
 
   // Tooltops
 

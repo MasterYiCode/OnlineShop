@@ -1,0 +1,24 @@
+﻿@model List<Model.EF.Menu>
+<div class="header-center">
+    <nav class="main-nav">
+        <ul class="menu sf-arrows">
+
+            @foreach (var item in Model)
+            {
+                if (item.ID == 1)
+                {
+                    <li class="megamenu-container active">
+                        <a href="@item.Link" target="@item.Target">@item.Text</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="megamenu-container">
+                        <a href="@item.Link" target="@item.Target">@item.Text</a>
+                    </li>
+                }
+            }
+
+        </ul><!-- End .menu -->
+    </nav><!-- End .main-nav -->
+</div><!-- End .header-center -->

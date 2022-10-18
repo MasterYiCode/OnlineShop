@@ -96,6 +96,16 @@ namespace Model.Dao
             return u != null;
         }
 
+        //
+        public bool ChangeStatus(long id)
+        {
+            var user = context.Users.Find(id);
+            var status = !user.Status;
+            user.Status = status;
+            context.SaveChanges();
+            return status;
+        }
+
         // Verify Account: Xác thực tải khoản
         public bool VerifyAccount(string id)
         {
